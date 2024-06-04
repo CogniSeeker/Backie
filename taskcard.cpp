@@ -43,3 +43,30 @@ bool TaskCard::eventFilter(QObject *watched, QEvent *event) {
     }
     return QWidget::eventFilter(watched, event);
 }
+QLabel* TaskCard::adressNameL() const {
+    return ui->taskNameL;
+}
+QLabel* TaskCard::adressStatusL() const {
+    return ui->taskStatusL;
+}
+QLabel* TaskCard::adressRecurrencesL() const {
+    return ui->recurrenceSumTasksL;
+}
+QLabel* TaskCard::adressDatesL() const {
+    return ui->dateSumTasksL;
+}
+QLabel* TaskCard::adressDestinationsL() const {
+    return ui->destinationsSumTasksL;
+}
+QPushButton* TaskCard::adressBackupNowB() const {
+    return ui->backupNowTaskB;
+}
+QToolButton* TaskCard::adressEditTB() const {
+    return ui->editTaskTB;
+}
+QToolButton* TaskCard::adressDeleteTB() const {
+    return ui->deleteTaskTB;
+}
+QToolButton* TaskCard::adressFoldingTB() const {
+    return ui->foldingTaskTB;
+}

@@ -60,106 +60,138 @@ int backupWorker(int argc, char* argv[]) {
 
 namespace Test {
 void cleanSettings() {
-	Settings& settings = Settings::getInstance();
+    Settings& settings = Settings::getInstance();
 
-	// delete all tasks
-	for (auto& task : settings.getTaskVec()) {
-		//            SPDLOG_INFO("Removing task with key: {}", task.getKey());
-		task.deleteLocal();
-	}
-	// delete all destinations
-	for (auto& dest : settings.getDestVec()) {
-		//            SPDLOG_INFO("Removing dest with key: {}",
-		//            dessssazst.getKey());
-		settings.remove(dest);
-	}
+    // delete all tasks
+    for (auto& task : settings.getTaskVec()) {
+        //            SPDLOG_INFO("Removing task with key: {}", task.getKey());
+        task.deleteLocal();
+    }
+    // delete all destinations
+    for (auto& dest : settings.getDestVec()) {
+        //            SPDLOG_INFO("Removing dest with key: {}",
+        //            dessssazst.getKey());
+        settings.remove(dest);
+    }
 }
 
 void populateSettings() {
-	Settings& settings = Settings::getInstance();
-	Destination test_dest1("Default destination 1", "W:\\Backie backups\\Dest 1");
-	settings.addUpdate(test_dest1);
+    Settings& settings = Settings::getInstance();
+    // MARK
+//    Destination test_dest1("Default destination 1", "W:\\Backie backups\\Dest 1");
+//    settings.addUpdate(test_dest1);
+//    Destination test_dest2("Default destination 2", "W:\\Backie backups\\Dest 2");
+//    settings.addUpdate(test_dest2);
+    //OLEH
+    Destination test_dest1("Default destination 1", "D:\\Code\\Testing\\Dest 1");
+    settings.addUpdate(test_dest1);
+    Destination test_dest2("Default destination 2", "D:\\Code\\Testing\\Dest 2");
+    settings.addUpdate(test_dest2);
+    Destination test_dest3("Default destination 3", "D:\\Code\\Testing\\Dest 3");
+    settings.addUpdate(test_dest2);
 
-	Destination test_dest2("Default destination 2", "W:\\Backie backups\\Dest 2");
-	settings.addUpdate(test_dest2);
+    const std::time_t now = time(0);
+    const std::tm time = *std::localtime(std::addressof(now));
 
-	std::shared_ptr<OnceSchedule> once = std::make_shared<OnceSchedule>();
-	once->year = 2020;
-	once->month = 11;
-	once->day = 20;
-	once->hour = 12;
-	once->minute = 35;
+    std::shared_ptr<OnceSchedule> once = std::make_shared<OnceSchedule>();
+//    once->year = 2023;
+//    once->month = 9;
+//    once->day = 20;
+//    once->hour = 12;
+//    once->minute = 35;
+    once->year = 2023;
+    once->month = time.tm_mon + 1;
+    once->day = time.tm_mday;
+    once->hour = time.tm_hour;
+    once->minute = time.tm_min + 1;
 
-	std::shared_ptr<MonthlySchedule> monthly = std::make_shared<MonthlySchedule>();
-	monthly->day = 20;
-	monthly->hour = 9;
-	monthly->minute = 0;
+    std::shared_ptr<MonthlySchedule> monthly = std::make_shared<MonthlySchedule>();
+//    monthly->day = 20;
+//    monthly->hour = 9;
+//    monthly->minute = 0;
+    monthly->day = time.tm_mday;
+    monthly->hour = time.tm_hour;
+    monthly->minute = time.tm_min + 2;
 
-	std::shared_ptr<WeeklySchedule> weekly = std::make_shared<WeeklySchedule>();
-	weekly->day = 5;
-	weekly->hour = 23;
-	weekly->minute = 59;
+    std::shared_ptr<WeeklySchedule> weekly = std::make_shared<WeeklySchedule>();
+//    weekly->day = 5;
+//    weekly->hour = 23;
+//    weekly->minute = 59;
+    weekly->day = 5;
+    weekly->hour = time.tm_hour;
+    weekly->minute = time.tm_min + 3;
 
-	std::shared_ptr<DailySchedule> daily = std::make_shared<DailySchedule>();
-	daily->hour = 0;
-	daily->minute = 0;
 
-	std::shared_ptr<MonthlySchedule> monthlyTest = std::make_shared<MonthlySchedule>();
-	monthlyTest->day = 31;
-	monthlyTest->hour = 9;
-	monthlyTest->minute = 0;
+    std::shared_ptr<DailySchedule> daily = std::make_shared<DailySchedule>();
+//    daily->hour = 0;
+//    daily->minute = 0;
+    daily->hour = time.tm_hour;
+    daily->minute = time.tm_min + 4;
 
-	BackupBuilder builder;
-	auto test_task1 = builder.setName("Minecraft")
-						  .setDestinations({test_dest1, test_dest2})
-						  .setSources({"W:\\Src folder 1"})
-						  .setSchedules({weekly, daily})
-						  .buildTask();
-	auto test_task2 = builder.setName("Homework")
-						  .setDestinations({test_dest2})
-						  .setSources({"W:\\Src folder 2"})
-						  .setSchedules({once})
-						  .buildTask();
-	auto test_task3 = builder.setName("Saves")
-						  .setDestinations({test_dest1})
-						  .setSources({"W:\\Src folder 3"})
-						  .setSchedules({monthly})
-						  .buildTask();
-	auto test_task4 = builder.setName("Minecraft 2")
-						  .setDestinations({test_dest1, test_dest2})
-						  .setSources({"W:\\Src folder 1"})
-						  .setSchedules({daily})
-						  .buildTask();
-	auto test_task5 = builder.setName("Minecraft 3")
-						  .setDestinations({test_dest1, test_dest2})
-						  .setSources({"W:\\Src folder 1"})
-						  .setSchedules({monthlyTest})
-						  .buildTask();
+    std::shared_ptr<MonthlySchedule> monthlyTest = std::make_shared<MonthlySchedule>();
+    monthlyTest->day = 31;
+    monthlyTest->hour = 9;
+    monthlyTest->minute = 0;
 
-	if (test_task1) {
-		test_task1->saveLocal();
-	}
-	test_task2->saveLocal();
-	test_task3->saveLocal();
-	test_task4->saveLocal();
-	test_task5->saveLocal();
+    BackupBuilder builder;
+    auto test_task1 = builder.setName("Minecraft")
+                          .setDestinations({test_dest1, test_dest2})
+//                          .setSources({"W:\\Src folder 1"})
+                          .setSources({"D:\\Code\\Testing\\Src folder 1"})
+                          .setSchedules({weekly, daily})
+                          .buildTask();
+    auto test_task2 = builder.setName("Homework")
+                          .setDestinations({test_dest2})
+//                          .setSources({"W:\\Src folder 2"})
+                          .setSources({"D:\\Code\\Testing\\Src folder 2"})
+                          .setSchedules({once})
+                          .buildTask();
+    auto test_task3 = builder.setName("Saves")
+                          .setDestinations({test_dest1})
+//                          .setSources({"W:\\Src folder 3"})
+                          .setSources({"D:\\Code\\Testing\\Src folder 3"})
+                          .setSchedules({monthly})
+                          .buildTask();
+    auto test_task4 = builder.setName("Minecraft 2")
+                          .setDestinations({test_dest1, test_dest2})
+//                          .setSources({"W:\\Src folder 1"})
+                          .setSources({"D:\\Code\\Testing\\Src folder 1"})
+                          .setSchedules({daily})
+                          .buildTask();
+    auto test_task5 = builder.setName("Minecraft 3")
+                          .setDestinations({test_dest1, test_dest2})
+//                          .setSources({"W:\\Src folder 1"})
+                          .setSources({"D:\\Code\\Testing\\Src folder 1"})
+                          .setSchedules({once})
+                          .buildTask();
+
+    if (test_task1) {
+        test_task1->saveLocal();
+    } else {
+        qDebug() << "Didnt perform saveLocal";
+    }
+    test_task2->saveLocal();
+    test_task3->saveLocal();
+
+//    test_task4->saveLocal();
+//    test_task5->saveLocal();
 }
 
-void getPrintSettings() {
-	Settings& settings = Settings::getInstance();
-	std::vector<Task> tasks = settings.getTaskVec();
-	std::vector<Destination> dests = settings.getDestVec();
+    void getPrintSettings() {
+        Settings& settings = Settings::getInstance();
+        std::vector<Task> tasks = settings.getTaskVec();
+        std::vector<Destination> dests = settings.getDestVec();
 
-	std::cout << "Tasks:" << std::endl;
-	for (auto& task : tasks) {
-		std::cout << task << std::endl;
-	}
+        std::cout << "Tasks:" << std::endl;
+        for (auto& task : tasks) {
+            std::cout << task << std::endl;
+        }
 
-	std::cout << "Global destinations:" << std::endl;
-	for (auto& dest : dests) {
-		std::cout << dest << std::endl;
-	}
-}
+        std::cout << "Global destinations:" << std::endl;
+        for (auto& dest : dests) {
+            std::cout << dest << std::endl;
+        }
+    }
 } // namespace Test
 
 void recoverOrigin(const fs::path backupFolder, const Task task) {
@@ -217,16 +249,23 @@ int guiMain(int argc, char* argv[]) {
 	loadStyleSheet(":/styles/global.css", nullptr);
 
 	MainWindow mainWindow;
-	Settings& settings = Settings::getInstance();
+    Settings& settings = Settings::getInstance();
 
-	std::vector<Destination> dests = settings.getDestVec();
-	std::vector<Task> tasks = settings.getTaskVec();
+    //TEST BACKUP
 
-	fs::path backupFolder = dests[0].destinationFolder / tasks[0].getName();
-	SPDLOG_INFO("Backup folder: {}", backupFolder.string());
-	Metadata mtd(backupFolder);
-	std::vector<fs::path> backups = mtd.getBackupsVec();
-	recoverOrigin(backups[0], tasks[0]);
+//    Test::cleanSettings();
+//    Test::populateSettings();
+//    Test::getPrintSettings();
+
+//    std::vector<Destination> dests = settings.getDestVec();
+//    std::vector<Task> tasks = settings.getTaskVec();
+
+    // uncomment only when there are backups available
+//    fs::path backupFolder = dests[0].destinationFolder / tasks[0].getName();
+//    SPDLOG_INFO("Backup folder: {}", backupFolder.string());
+//    Metadata mtd(backupFolder);
+//    std::vector<fs::path> backups = mtd.getBackupsVec();
+//    recoverOrigin(backups[0], tasks[0]);
 
 	//	if (!tasks.empty()) {
 	//		tasks[0].perform();
@@ -234,23 +273,23 @@ int guiMain(int argc, char* argv[]) {
 	//		SPDLOG_ERROR("Couldn't get the task");
 	//	}
 
-	//	Test::cleanSettings();
+//        Test::cleanSettings();
 
-	//	Test::populateSettings();
+    //	Test::populateSettings();
 
 	//	Test::getPrintSettings();
 
 	// TODO: check what happens if you bring back a deleted file
 
 	//	SPDLOG_INFO("Task vector is empty, creating new task");
-	//	const std::time_t now = time(0);
-	//	const std::tm time = *std::localtime(std::addressof(now));
-	//	std::shared_ptr<OnceSchedule> once = std::make_shared<OnceSchedule>();
-	//	once->year = 2023;
-	//	once->month = time.tm_mon + 1;
-	//	once->day = time.tm_mday;
-	//	once->hour = time.tm_hour;
-	//	once->minute = time.tm_min + 2;
+//        const std::time_t now = time(0);
+//        const std::tm time = *std::localtime(std::addressof(now));
+//        std::shared_ptr<OnceSchedule> once = std::make_shared<OnceSchedule>();
+//        once->year = 2023;
+//        once->month = time.tm_mon + 1;
+//        once->day = time.tm_mday;
+//        once->hour = time.tm_hour;
+//        once->minute = time.tm_min + 2;
 
 	//	Destination test_dest1("Default destination 1",
 	//						   "W:\\Backiebackups\\Dest 1");
@@ -268,37 +307,35 @@ int guiMain(int argc, char* argv[]) {
 
 	////        Destination test_dest1("Default destination 1", "W:\\Backie
 	/// backups\\Dest 1");
-	//        Destination test_dest1("Default destination 1",
-	//        "D:\\Code\\sidebaricons"); settings.addUpdate(test_dest1);
+//            Destination test_dest("Default destination 1",
+//            "D:\\Code\\sidebaricons"); settings.addUpdate(test_dest);
 
-	//        BackupBuilder builder;
-	//        auto test_task = builder
-	//                        .setName("Current Dest 2")
-	//                        .setSchedules({onceFull})
-	//                        .setDestinations({test_dest1})
-	//                        .setSources({"D:\\Gallery\\backgrounds"})
-	//                        .buildTask();
+//            BackupBuilder builder;
+//            auto test_task = builder
+//                            .setName("Gallery backup")
+//                            .setSchedules({once})
+//                            .setDestinations({test_dest})
+//                            .setSources({"D:\\Gallery\\backgrounds"})
+//                            .buildTask();
+//            if (test_task) {
+//            test_task->saveLocal();
+//            } else {
+//            qDebug() << "Didnt perform saveLocal";
+//            }
 
-	//        if (test_task) {
-	//        test_task->saveLocal();
+//            std::vector<Task> tasks = settings.getTaskVec();
+//            std::vector<Destination> dests = settings.getDestVec();
 
-	//        } else {
-	//        qDebug() << "Didnt perform saveLocal";
-	//        }
+//            std::cout << "Tasks:" << std::endl;
+//            for (auto& task : tasks) {
+//            std::cout << task << std::endl;
+//            }
 
-	//        std::vector<Task> tasks = settings.getTaskVec();
-	//        std::vector<Destination> dests = settings.getDestVec();
-
-	//        std::cout << "Tasks:" << std::endl;
-	//        for (auto& task : tasks) {
-	//        std::cout << task << std::endl;
-	//        }
-
-	//        std::cout << "Global destinations:" << std::endl;
-	//        for (auto& dest : dests) {
-	//        std::cout << dest << std::endl;
-	//        }
-	//    }
+//            std::cout << "Global destinations:" << std::endl;
+//            for (auto& dest : dests) {
+//            std::cout << dest << std::endl;
+//            }
+//	    }
 
 	//    std::vector<Task> tasks = settings.getTaskVec();
 	//        test_task->perform();

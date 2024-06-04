@@ -3,6 +3,9 @@
 
 #include <QWidget>
 
+#include "settings.h"
+#include "task.h"
+
 namespace Ui {
 class welcomeBackupScreen;
 }
@@ -17,6 +20,9 @@ public:
 
 private:
     Ui::welcomeBackupScreen *ui;
+    void addTaskToLayout(const Task& task, QLayout* layout, Settings& settings);
+
+    std::string getRecurrenceString(ScheduleRecurrence recurrence);
 };
 
 #endif // WELCOMEBACKUPSCREEN_H

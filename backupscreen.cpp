@@ -322,38 +322,38 @@ void BackupScreen::createBackupBclicked() {
     auto hour = backupArgs.getDate(BackupArgs::HOUR);
     auto minute = backupArgs.getDate(BackupArgs::MINUTE);
 
-    Settings& settings = Settings::getInstance();
+//    Settings& settings = Settings::getInstance();
 
-     // delete all tasks
-    for (auto& task : settings.getTaskVec()) {
-        task.deleteLocal();
-    }
-    // delete all destinations
-    for (auto& dest : settings.getDestVec()) {
-        settings.remove(dest);
-    }
+//     // delete all tasks
+//    for (auto& task : settings.getTaskVec()) {
+//        task.deleteLocal();
+//    }
+//    // delete all destinations
+//    for (auto& dest : settings.getDestVec()) {
+//        settings.remove(dest);
+//    }
 
-    Destination test_dest1("DefaultDest", "D:\\Code\\sidebaricons");
-    std::cout << test_dest1;
-    settings.addUpdate(test_dest1);
+//    Destination test_dest1("DefaultDest", "D:\\Code\\sidebaricons");
+//    std::cout << test_dest1;
+//    settings.addUpdate(test_dest1);
 
-    std::shared_ptr<OnceSchedule> once = std::make_shared<OnceSchedule>();
-    const std::time_t now = time(0);
-    const std::tm time = *std::localtime(std::addressof(now));
-    once->year = 2023;
-    once->month = 9;
-    once->day = 14;
-    once->hour = 21;
-    once->minute = time.tm_min + 1;
+//    std::shared_ptr<OnceSchedule> once = std::make_shared<OnceSchedule>();
+//    const std::time_t now = time(0);
+//    const std::tm time = *std::localtime(std::addressof(now));
+//    once->year = 2023;
+//    once->month = 9;
+//    once->day = 23;
+//    once->hour = 21;
+//    once->minute = time.tm_min + 1;
 
-    BackupBuilder builder;
-    auto test_task1 = builder
-                          .setName("Gallery")
-                          .setDestinations({test_dest1})
-                          .setSources({"D:\\Gallery\\backgrounds"})
-                          .setSchedules({once})
-//                          .setCurrentType(BackupType::FULL)
-                          .buildTask();
+//    BackupBuilder builder;
+//    auto test_task1 = builder
+//                          .setName("Gallery")
+//                          .setDestinations({test_dest1})
+//                          .setSources({"D:\\Gallery\\backgrounds"})
+//                          .setSchedules({once})
+////                          .setCurrentType(BackupType::FULL)
+//                          .buildTask();
 
 //    if (test_task1) {
 //        test_task1->saveLocal();
@@ -362,18 +362,18 @@ void BackupScreen::createBackupBclicked() {
 //        qDebug() << "Didnt perform saveLocal";
 //    }
 
-    std::vector<Task> tasks = settings.getTaskVec();
-    std::vector<Destination> dests = settings.getDestVec();
+//    std::vector<Task> tasks = settings.getTaskVec();
+//    std::vector<Destination> dests = settings.getDestVec();
 
-    std::cout << "Tasks:" << std::endl;
-    for (auto& task : tasks) {
-        std::cout << task << std::endl;
-    }
+//    std::cout << "Tasks:" << std::endl;
+//    for (auto& task : tasks) {
+//        std::cout << task << std::endl;
+//    }
 
-    std::cout << "Global destinations:" << std::endl;
-    for (auto& dest : dests) {
-        std::cout << dest << std::endl;
-    }
+//    std::cout << "Global destinations:" << std::endl;
+//    for (auto& dest : dests) {
+//        std::cout << dest << std::endl;
+//    }
 
 
 ////    std::optional<BackupSchedule> backupSchedule_test;
